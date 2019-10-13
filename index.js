@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var User = require('./models/user');
+//var College = require('./models/college');
 var passportLocalMongoose = require('passport-local-mongoose');
 
 mongoose.connect('mongodb://localhost:27017/WEBSHIZ');
@@ -34,6 +35,13 @@ app.get('/',function(req, res){
     res.render('./home/index.html');
 })
 
+app.get('/student',function(req,res){
+    res.render('./Student/index.html')
+})
+
+app.get('/viewClg', function(req,res){
+    res.render('./Student/StuClg.html')
+});
 app.get('/login',function(req,res){
     res.render('student_login.html');
 });
@@ -119,7 +127,7 @@ app.post('/wait',function(req,res){
                 res.render('wait',{validate:'Invalid username or password'});                
             }
             else{
-                res.redirect('/');
+                res.render('./Student/index',{result: result});
             }
         });
     });
