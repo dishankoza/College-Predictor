@@ -10,17 +10,17 @@
     <meta name="keywords" content="Colorlib Templates">
 
     <!-- Title Page-->
-    <title>College Predictor</title>
+    <title>Weather Station</title>
 
     <!-- Icons font CSS-->
-    <link href="extra/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-    <link href="extra/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="extra/css/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="static/css/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <!-- Font special for pages-->
     <link href="extra/https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
 
     <!-- Vendor CSS-->
-    <link href="extra/vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="extra/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+    <link href="static/css/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="static/css/datepicker/daterangepicker.css" rel="stylesheet" media="all">
 
     <!-- Main CSS-->
     <link href="extra/css/signup.css" rel="stylesheet" media="all">
@@ -34,7 +34,7 @@
                     <h2 class="title">SIGNUP</h2>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="/login">
+                    <form method="GET" action="/wait">
                         <div class="form-row m-b-55">
                             <div class="name">Name</div>
                             <div class="value">
@@ -66,7 +66,7 @@
                             <div class="name">Email</div>
                             <div class="value">
                                 <div class="input-group">
-                                    <input class="input--style-5" type="email" name="username"required>
+                                    <input class="input--style-5" type="email" name="email"required>
                                 </div>
                             </div>
                         </div>
@@ -82,18 +82,10 @@
                                     <div class="name">Confirm password</div>
                                     <div class="value">
                                         <div class="input-group">
-                                            <input class="input--style-5" type="password" name="password"required>
+                                            <input class="input--style-5" type="password" name="check_password"required>
                                         </div>
                                     </div>
                                 </div>
-                        <div class="form-row">
-                            <div class="name">Marks</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input class="input--style-5" type="text" name="marks"required>
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-row m-b-55">
                             <div class="name">Phone</div>
                             <div class="value">
@@ -140,12 +132,12 @@
     <!-- Jquery JS-->
     <script src="extra/vendor/jquery/jquery-3.2.1.min.js"></script>
     <!-- Vendor JS-->
-    <script src="extra/vendor/select2/select2.min.js"></script>
-    <script src="extra/vendor/datepicker/moment.min.js"></script>
-    <script src="extra/vendor/datepicker/daterangepicker.js"></script>
+    <script src="static/scripts/select2/select2.min.js"></script>
+    <script src="static/scripts/datepicker/moment.min.js"></script>
+    <script src="static/scripts/vendor/datepicker/daterangepicker.js"></script>
 
     <!-- Main JS-->
-    <script src="extra/js/global.js"></script>
+    <script src="static/scripts/global.js"></script>
 
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 
