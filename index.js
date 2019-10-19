@@ -32,6 +32,7 @@ app.use(session({secret: 'ssshhhhh',saveUninitialized: true,resave: true}));
 //     cookie : {maxAge : 60000}
 // }));
 var sess; 
+var sessmarks = 86;
 
 app.get('/',function(req, res){
     res.render('./home/index.html');
@@ -71,6 +72,26 @@ app.get('/viewClg', function(req,res){
     });
 });
 
+app.post('/stuviewClg2', function(req,res){
+    var branch = req.body.branch;
+    console.log(branch);
+    console.log(sessmarks);
+    
+    var MongoClient = require('mongodb').MongoClient;
+    var url = "mongodb://localhost:27017/";
+    MongoClient.connect(url, function(err, db) {
+         if (err) throw err;
+         var dbo = db.db("WEBSHIZ");
+         dbo.collection("colleges").find({}).toArray(function(err, result) {
+             if (err) throw err;
+             console.log(result);
+             db.close();
+             console.log(result);
+    res.render('./Student/stuviewClg2.html',{result:result,branch:branch,sessmarks:sessmarks})
+         });
+    });
+});
+
 
 app.get('/stuviewClg', function(req,res){
 
@@ -95,11 +116,63 @@ app.get('/signup',function(req,res){
     res.render('signup.html');
 });
 
+app.post("/updateClg",function(re){
+
+    var name = req.body.name;
+    var address = req.body.address;
+    var email = req.body.email;
+    var phone = req.body.phone;
+    var branch1 = req.body.branch1;
+    var branch2 = req.body.branch2;
+    var branch3 = req.body.branch3;
+    var cutoff1 = req.body.b1y;
+    var cutoff2 = req.body.b2y;
+    var cutoff3 = req.body.b3y;
+    
+    cutoff1 = ((Number(cutoff1[0])+Number(cutoff1[1])+Number(cutoff1[2]))/3); 
+    cutoff2 = ((Number(cutoff2[0])+Number(cutoff2[1])+Number(cutoff2[2]))/3); 
+    cutoff3 = ((Number(cutoff3[0])+Number(cutoff3[1])+Number(cutoff3[2]))/3); 
+
+    college.findOneAndUpdate({name:name},{name:name,
+        address: address,
+        email: email,
+        phone:phone,
+    
+    
+    cutoffs: [{
+        'branchName':branch1,
+        'cutoffMarks' : cutoff1
+    },
+    {
+        'branchName':branch2,
+        'cutoffMarks' : cutoff2
+
+    },
+    {
+        'branchName':branch3,
+        'cutoffMarks' : cutoff2
+    }]
+    })
+    
+});
+
 app.get('/error',function(req,res){
     res.render('error.html');
 });
 app.get('/admin',function(req,res){
     res.render('admin_login.html');
+})
+
+app.post("/admintest", function(req,res){
+    var username = req.body.email;
+    var password = req.body.pass;
+
+    if(username == 'riya@gmail.com' && password == "riya"){
+        res.redirect("/viewclg");
+    }
+    else{
+        res.redirect("/admin");
+    }
 })
 
 app.get('/addclg',function(req,res){
@@ -119,13 +192,14 @@ app.post('/test',function(req,res){
     var branch1 = req.body.branch1;
     var branch2 = req.body.branch2;
     var branch3 = req.body.branch3;
-    var cutoff1 = req.body.y1;
-    var cutoff2 = req.body.y2;
-    var cutoff3 = req.body.y3;
-    cutoff1 = (cutoff1[0]+cutoff1[1]+cutoff1[2])/3; 
-    cutoff2 = (cutoff2[0]+cutoff2[1]+cutoff2[2])/3; 
-    cutoff3 = (cutoff3[0]+cutoff3[1]+cutoff3[2])/3;
-    con 
+    var cutoff1 = req.body.b1y;
+    var cutoff2 = req.body.b2y;
+    var cutoff3 = req.body.b3y;
+    
+    cutoff1 = ((Number(cutoff1[0])+Number(cutoff1[1])+Number(cutoff1[2]))/3); 
+    cutoff2 = ((Number(cutoff2[0])+Number(cutoff2[1])+Number(cutoff2[2]))/3); 
+    cutoff3 = ((Number(cutoff3[0])+Number(cutoff3[1])+Number(cutoff3[2]))/3); 
+
     var cutoffs = []
     // cutoffs.push({"branchName"})
     var MongoClient = require('mongodb').MongoClient;
@@ -149,16 +223,16 @@ app.post('/test',function(req,res){
         
         cutoffs: [{
             'branchName':branch1,
-            'cutoff' : cutoff1
+            'cutoffMarks' : cutoff1
         },
         {
             'branchName':branch2,
-            'cutoff' : cutoff2
+            'cutoffMarks' : cutoff2
 
         },
         {
-            'branchName':branch1,
-            'cutoff' : cutoff2
+            'branchName':branch3,
+            'cutoffMarks' : cutoff2
         }]
     });
         college.save(college, function(err, college){
@@ -200,9 +274,26 @@ app.get('/viewstu',function(req,res){
 })
 
 app.get('/updateclg',function(req,res){
+
     res.render('./Student/updateclg.html')
 })
 
+app.post('/updateclg',function(req,res){
+    name = req.body.name;
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("WEBSHIZ");
+        var query = { name:name };
+        dbo.collection("colleges").find(query).toArray(function(err, result) {
+            if (err) throw err;
+            //console.log(result);
+            db.close();
+                res.render('./Student/updateclg',{result: result});
+            
+        });
+
+})
+});
 
 app.get('/updatestu',function(req,res){
     res.render('./Student/updatestu.html')
@@ -210,7 +301,7 @@ app.get('/updatestu',function(req,res){
 
 app.post('/login', function(req, res){
     console.log(req.body);
-    sess = req.body.username;
+    sessmarks = req.body.marks;
     var first_name = req.body.first_name;
     var last_name = req.body.last_name;
     var address = req.body.address;
@@ -278,6 +369,7 @@ app.post('/wait',function(req,res){
             }
             else{
                 res.render('./Student/index',{result: result});
+                console.log(sessmarks);
             }
         });
     
